@@ -1,0 +1,59 @@
+<h1>Мессенджер</h1>
+<div class="chat">
+<pre id="messages" style="height: 80%; overflow: scroll"></pre>
+<input type="text" id="messageBox" placeholder="Набрать сообщение" style="display: block; width: 80%; margin-bottom: 20px; padding: 10px;" />
+</div>
+<button id="send" title="Отправить сообщение!" style="width: 50%; height: 30px;">ОТПРАВИТЬ</button>
+<link rel="stylesheet" href="css/style.css">
+<script>
+  (function() {
+    const sendBtn = document.querySelector('#send');
+    const messages = document.querySelector('#messages');
+    const messageBox = document.querySelector('#messageBox');
+
+    let ws;
+
+    function showMessage(message) {
+  if (message instanceof Blob) {
+    message.text().then((text) => {
+      messages.textContent += `\n\n${text}`;
+      messages.scrollTop = messages.scrollHeight;
+      messageBox.value = '';
+    });
+  } else {
+    messages.textContent += `\n\n${message}`;
+    messages.scrollTop = messages.scrollHeight;
+    messageBox.value = '';
+  }
+}
+
+    function init() {
+      if (ws) {
+        ws.onerror = ws.onopen = ws.onclose = null;
+        ws.close();
+      }
+
+      ws = new WebSocket('ws://localhost:5000');
+      ws.onopen = () => {
+        console.log('Связь установлена!');
+      }
+    
+      ws.onmessage = ({ data }) => showMessage(data);
+      ws.onclose = function() {
+        ws = null;
+      }
+    }
+
+    sendBtn.onclick = function() {
+      if (!ws) {
+        showMessage("Абонент, не абонент!");
+        return ;
+      }
+
+      ws.send(messageBox.value);
+      showMessage(messageBox.value);
+    }
+
+    init();
+  })();
+</script>

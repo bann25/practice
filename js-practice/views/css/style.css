@@ -1,0 +1,25 @@
+h1{
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: #011792;
+    border: 2mm ridge rgba(0, 116, 248, 0.6);
+    width: 50%;
+    display: block;
+    margin: auto;
+    border-radius: 10px;
+}
+button{
+    display: block;
+    background-color: rgb(0, 89, 255);
+    border-radius: 20px;
+    margin: auto;
+}
+input{
+    display: block;
+    border-radius: 5px;
+    margin: auto;
+}
+pre{
+    border: 2mm ridge rgba(0, 211, 248, 0.6);
+    background-color: white;
+}
